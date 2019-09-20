@@ -36,7 +36,7 @@ sock.on('message', async function(topic: string, message: Buffer) {
             let idx = txn.inputs[i].outputIndex;
             console.log("Input:", txid, idx);
             if(inputs[i])
-                console.log("Error: Txn notified but UTXO not spent in 'gettxout'.");
+                throw Error("Error: Txn notified but UTXO not spent in 'gettxout'.");
             else
                 console.log("OK (marked spent)")
         }
@@ -57,4 +57,27 @@ export interface TxOutResult {
     }
     version: number
     coinbase: boolean
-  }
+}
+
+// @ts-ignore
+process.on('uncaughtException', async (err: any, origin: any) => {
+    console.log("[ERROR] uncaughtException", err);
+    try {
+        console.log(`[${(new Date()).toUTCString()}] ${err.stack}`);
+    } catch(_) {
+        console.log(err);
+    } finally {
+        process.exit(0);
+    }
+});
+
+process.on('unhandledRejection', async (err: any, promise: any) => {
+    console.log("[ERROR] unhandledRejection", err);
+    try {
+        console.log(`[${(new Date()).toUTCString()}] ${err.stack}`);
+    } catch(_) {
+        console.log(err);
+    } finally {
+        process.exit(0);
+    }
+});
