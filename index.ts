@@ -6,7 +6,7 @@ import * as crypto from 'crypto';
 
 const _rpcClient = require('bitcoin-rpc-promise-retry');
 const connectionString = 'http://' + process.env.rpc_user + ':' + process.env.rpc_pass + '@' + process.env.rpc_host + ':' + process.env.rpc_port
-let rpc = new _rpcClient(connectionString);
+let rpc = new _rpcClient(connectionString, { maxRetries: 10, retryDelayMs: 500 });
 
 let sock: any = zmq.socket('sub');
 sock.connect('tcp://' + process.env.rpc_host + ':28332');
