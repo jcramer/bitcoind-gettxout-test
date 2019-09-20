@@ -1,0 +1,23 @@
+{
+  "name": "bitcoind-gettxout-test",
+  "version": "1.0.0",
+  "description": "For debugging gettxout issue",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/dotenv": "6.1.1",
+    "@types/zeromq": "4.6.1",
+    "zeromq": "5.1.0",
+    "dotenv": "8.1.0",
+    "bitcore-lib-cash": "0.19.0",
+    "bitcoin-rpc-promise-retry": "1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "3.6.3"
+  }
+}
