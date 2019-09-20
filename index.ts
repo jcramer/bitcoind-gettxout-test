@@ -24,7 +24,11 @@ sock.on('message', async function(topic: string, message: Buffer) {
         }
 
         console.log('-----');
-        let txid = Buffer.from(crypto.createHash('sha256').update(message).digest().toJSON().data.reverse()).toString('hex');
+        let hash1 = crypto.createHash('sha256');
+        let hash2 = crypto.createHash('sha256');
+        hash1.update(message);
+        hash2.update(hash1.digest());
+        let txid = Buffer.from(hash2.digest().toJSON().data.reverse()).toString('hex');
         console.log("New Txn (mempool or block acceptance):", txid);
         console.log("Input Count:", txn.inputs.length);
         for(let i = 0; i < txn.inputs.length; i++) {
