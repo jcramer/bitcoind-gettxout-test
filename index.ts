@@ -20,7 +20,17 @@ sock.on('message', async function(topic: string, message: Buffer) {
         for(let i = 0; i < txn.inputs.length; i++) {
             let txid = txn.inputs[i].prevTxId.toString('hex');
             let idx = txn.inputs[i].outputIndex;
-            inputs.push(await rpc.getTxOut(txid, idx, true));
+            try {
+                if(txid === coinbase_txid)
+                    inputs.push(null);
+                else
+                    inputs.push(await rpc.getTxOut(txid, idx, true));
+            } catch(error) {
+                console.log(error);
+                console.log(txid);
+                console.log(idx);
+                throw error;
+            }
         }
 
         console.log('-----');
@@ -58,6 +68,8 @@ export interface TxOutResult {
     version: number
     coinbase: boolean
 }
+
+const coinbase_txid = '0000000000000000000000000000000000000000000000000000000000000000'
 
 // @ts-ignore
 process.on('uncaughtException', async (err: any, origin: any) => {
